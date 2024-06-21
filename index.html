@@ -48,6 +48,25 @@
       border: none;
       border-radius: 5px;
       height: 20px;
+      /* Custom styles for sliders */
+      -webkit-appearance: none; /* Remove default styles */
+      appearance: none;
+      outline: none;
+    }
+    .controls input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.5); /* Light gray background for track */
+      border-radius: 5px;
+    }
+    .controls input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; /* Remove default styles */
+      appearance: none;
+      width: 20px; /* Slider thumb width */
+      height: 20px; /* Slider thumb height */
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for thumb */
+      border-radius: 50%; /* Rounded thumb */
+      cursor: pointer;
     }
     canvas {
       display: block;
