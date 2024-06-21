@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Model Viewer with Adjustable Spin Speed</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    #container {
+      width: 80%;
+      height: 80%;
+    }
+
+    #slider-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 200px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="slider-container">
+    <input type="range" id="slider" min="0" max="100" value="0">
+  </div>
+  <div id="container"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
+  <script>
+    // Global variables
+    let scene, camera, renderer, model, controls;
+    let spinSpeed = 0;
+
+    // Initialization function
+    function init() {
+      // Scene
+      scene = new THREE.Scene();
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 2;
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById('container').appendChild(renderer.domElement);
+
+      // Ambient light
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      // Directional light
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(0, 1, 1).normalize();
+      scene.add(directionalLight);
+
+      // Load 3D model
+      const loader = new THREE.GLTFLoader();
+      loader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', (gltf) => {
+        model = gltf.scene;
+        scene.add(model);
+      }, undefined, (error) => {
+        console.error('Error loading model:', error);
+      });
+
+      // Orbit controls
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      // Slider event listener
+      const slider = document.getElementById('slider');
+      slider.addEventListener('input', (event) => {
+        spinSpeed = event.target.value / 100;
+      });
+
+      // Resize listener
+      window.addEventListener('resize', onWindowResize);
+
+      // Start animation
+      animate();
+    }
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Update model rotation based on slider value
+      if (model) {
+        model.rotation.y += spinSpeed * 0.05; // Adjust rotation speed
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // Handle window resize
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // Initialize
+    init();
+  </script>
+</body>
+</html>
