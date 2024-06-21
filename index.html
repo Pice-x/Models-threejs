@@ -26,7 +26,7 @@
       transform: translateX(-50%);
       width: 80%; /* Adjust width as needed */
       max-width: 300px; /* Maximum width for controls */
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 191, 0, 0.8);
       padding: 10px;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -62,11 +62,11 @@
   <!-- Controls section -->
   <div class="controls">
     <div>
-      <label for="rotationSpeedSlider">Rotation Speed:</label>
-      <input type="range" id="rotationSpeedSlider" min="0" max="100" value="50">
+      <label for="rotationSpeedSlider">Make it spin! :D:</label>
+      <input type="range" id="rotationSpeedSlider" min="0" max="100" value="5">
     </div>
     <div>
-      <label for="modelOpacitySlider">Model Opacity:</label>
+      <label for="modelOpacitySlider">Make it invisible!:</label>
       <input type="range" id="modelOpacitySlider" min="0" max="1" step="0.01" value="1">
     </div>
   </div>
@@ -75,7 +75,7 @@
     // Global variables
     let scene, camera, renderer;
     let model;
-    let rotationSpeed = 0.5; // Default rotation speed
+    let rotationSpeed = 0.1; // Default rotation speed
     let modelOpacity = 1; // Default model opacity
 
     // Initialization function
