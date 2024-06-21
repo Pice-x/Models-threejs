@@ -12,7 +12,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f0f0f0;
+      background-color: transparent; /* Transparent background */
     }
     #container {
       width: 100%;
@@ -31,7 +31,9 @@
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
+      justify-content: space-between;
       z-index: 1;
     }
     .controls label {
@@ -57,10 +59,16 @@
     <!-- Canvas for Three.js renderer -->
   </div>
   
-  <!-- Slider for rotation speed -->
+  <!-- Controls section -->
   <div class="controls">
-    <label for="rotationSpeedSlider">Rotation Speed:</label>
-    <input type="range" id="rotationSpeedSlider" min="0" max="100" value="50">
+    <div>
+      <label for="rotationSpeedSlider">Rotation Speed:</label>
+      <input type="range" id="rotationSpeedSlider" min="0" max="100" value="50">
+    </div>
+    <div>
+      <label for="modelOpacitySlider">Model Opacity:</label>
+      <input type="range" id="modelOpacitySlider" min="0" max="1" step="0.01" value="1">
+    </div>
   </div>
 
   <script>
@@ -68,6 +76,7 @@
     let scene, camera, renderer;
     let model;
     let rotationSpeed = 0.5; // Default rotation speed
+    let modelOpacity = 1; // Default model opacity
 
     // Initialization function
     function init() {
@@ -75,7 +84,7 @@
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 5;
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ alpha: true }); // Enable alpha for transparency
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.getElementById('container').appendChild(renderer.domElement);
 
@@ -100,10 +109,23 @@
       // Resize listener
       window.addEventListener('resize', onWindowResize);
 
-      // Slider event listener
+      // Slider event listeners
       const rotationSpeedSlider = document.getElementById('rotationSpeedSlider');
       rotationSpeedSlider.addEventListener('input', function () {
         rotationSpeed = parseFloat(this.value) / 100; // Normalize value to 0-1 range
+      });
+
+      const modelOpacitySlider = document.getElementById('modelOpacitySlider');
+      modelOpacitySlider.addEventListener('input', function () {
+        modelOpacity = parseFloat(this.value);
+        if (model) {
+          model.traverse(function (node) {
+            if (node.isMesh) {
+              node.material.transparent = true;
+              node.material.opacity = modelOpacity;
+            }
+          });
+        }
       });
     }
 
