@@ -19,10 +19,11 @@
       max-width: 800px;
       height: 60vh;
       position: relative;
+      overflow: hidden; /* Ensure no overflow of model content */
     }
     .controls {
       position: absolute;
-      bottom: 10px;
+      bottom: 20px; /* Adjusted to lower position */
       left: 50%;
       transform: translateX(-50%);
       width: 200px; /* Adjust width as needed */
@@ -32,6 +33,7 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
+      z-index: 1; /* Ensure controls are above the model */
     }
     .controls label {
       margin-right: 10px;
@@ -40,6 +42,11 @@
     .controls input[type="range"] {
       flex: 1;
       margin: 0 5px;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   </style>
   <!-- Include Three.js and GLTFLoader.js -->
