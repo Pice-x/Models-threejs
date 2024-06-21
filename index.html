@@ -3,55 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Model Viewer</title>
+  <title>Three.js GLTFLoader Example</title>
   <style>
     body {
       margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f0f0f0;
+      overflow: hidden;
     }
-
     #container {
-      width: 80%;
-      height: 80%;
-    }
-
-    #slider-container {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 200px;
-      z-index: 1000;
+      width: 100%;
+      height: 100vh;
     }
   </style>
+  <!-- Include Three.js and GLTFLoader.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@latest/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@latest/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
-  <div id="slider-container">
-    <input type="range" id="slider" min="0" max="100" value="0">
-  </div>
   <div id="container"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
   <script>
-    // Global variables
-    let scene, camera, renderer, model, controls;
-    let spinSpeed = 0;
+    let scene, camera, renderer;
+    let model;
 
-    // Initialization function
+    init();
+    animate();
+
     function init() {
-      // Scene
       scene = new THREE.Scene();
-
-      // Camera
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 2;
+      camera.position.z = 5;
 
-      // Renderer
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.getElementById('container').appendChild(renderer.domElement);
@@ -67,51 +48,30 @@
 
       // Load 3D model
       const loader = new THREE.GLTFLoader();
-      loader.load('fox_minecraft.glb', (gltf) => {
+      loader.load('path_to_your_model.glb', function (gltf) {
         model = gltf.scene;
         scene.add(model);
-      }, undefined, (error) => {
+      }, undefined, function (error) {
         console.error('Error loading model:', error);
-      });
-
-      // Orbit controls
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-      // Slider event listener
-      const slider = document.getElementById('slider');
-      slider.addEventListener('input', (event) => {
-        spinSpeed = event.target.value / 100;
       });
 
       // Resize listener
       window.addEventListener('resize', onWindowResize);
-
-      // Start animation
-      animate();
     }
 
-    // Animation loop
     function animate() {
       requestAnimationFrame(animate);
-
-      // Update model rotation based on slider value
       if (model) {
-        model.rotation.y += spinSpeed * 0.05; // Adjust rotation speed
+        model.rotation.y += 0.01; // Rotate the model
       }
-
-      controls.update();
       renderer.render(scene, camera);
     }
 
-    // Handle window resize
     function onWindowResize() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
-
-    // Initialize
-    init();
   </script>
 </body>
 </html>
