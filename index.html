@@ -89,7 +89,7 @@
       document.getElementById('container').appendChild(renderer.domElement);
 
       // Ambient light
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Increased intensity
       scene.add(ambientLight);
 
       // Directional light
@@ -102,6 +102,14 @@
       loader.load('fox_minecraft.glb', function (gltf) {
         model = gltf.scene;
         scene.add(model);
+
+        // Set initial model material properties
+        model.traverse(function (node) {
+          if (node.isMesh) {
+            node.material.transparent = true;
+            node.material.opacity = modelOpacity;
+          }
+        });
       }, undefined, function (error) {
         console.error('Error loading model:', error);
       });
