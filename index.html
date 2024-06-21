@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Model Viewer with Adjustable Spin Speed</title>
+  <title>3D Model Viewer</title>
   <style>
     body {
       margin: 0;
@@ -35,8 +35,8 @@
   <div id="container"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
   <script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
   <script>
     // Global variables
     let scene, camera, renderer, model, controls;
@@ -67,7 +67,7 @@
 
       // Load 3D model
       const loader = new THREE.GLTFLoader();
-      loader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', (gltf) => {
+      loader.load('path_to_your_gltf_model.gltf', (gltf) => {
         model = gltf.scene;
         scene.add(model);
       }, undefined, (error) => {
